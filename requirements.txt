@@ -1,0 +1,5 @@
+pandas
+dhis2.py
+azure-storage-blob
+azure-identity
+requests
