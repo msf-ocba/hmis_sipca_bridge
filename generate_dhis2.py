@@ -79,7 +79,7 @@ blob_service_client = BlobServiceClient(ACCOUNT_URL, credential=SAS_TOKEN_SOURCE
 blob_client = blob_service_client.get_blob_client(container=CONTAINER, blob=BLOB_SOURCE)
 
 # Save the CSV from the datalake in a local file
-filename_sipca = f"{TODAY}_kobo_sipca_ocba.csv"
+filename_sipca = f"log/{TODAY}_kobo_sipca_ocba.csv"
 with open(filename_sipca, mode="wb") as sample_blob:
     download_stream = blob_client.download_blob()
     sample_blob.write(download_stream.readall())
@@ -98,7 +98,7 @@ blob_service_client_index = BlobServiceClient(ACCOUNT_URL, credential=SAS_TOKEN_
 blob_client_index = blob_service_client_index.get_blob_client(container=CONTAINER, blob=BLOB_INDEX)
 
 # Save the index (JSON) from the datalake in a local file
-filename_sipca_index_initial = f"{TODAY}_event_index_initial.json"
+filename_sipca_index_initial = f"log/{TODAY}_event_index_initial.json"
 with open(filename_sipca_index_initial, mode="wb") as blob_index:
     download_stream = blob_client_index.download_blob()
     blob_index.write(download_stream.readall())
@@ -208,7 +208,7 @@ for x in deleted:
     logger.warning(f"Deleted in Kobo. Kobo uuid: {x}")
 
 # Saving index
-filename_sipca_index_final = f"{TODAY}_event_index_final.json"
+filename_sipca_index_final = f"log/{TODAY}_event_index_final.json"
 utils.save_json_file(filename_sipca_index_final, event_index)
 with open(filename_sipca_index_final, mode="rb") as blob_index:
     blob_client_index.upload_blob(blob_index, overwrite=True)

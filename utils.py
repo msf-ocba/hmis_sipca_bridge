@@ -19,7 +19,7 @@ def save_json_file(filename, json_content, ident=4):
 def get_logger(program_name):
     # Logging setup
     today = date.today().strftime("%Y-%m-%d")
-    filename_log = today + "_" + program_name + ".log"
+    filename_log = f"log/{today}_{program_name}.log"
 
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
