@@ -51,10 +51,10 @@ The steps of the script are:
 ### Output files
 - `events_payload/{current_date}__{kobo_uuid}_{dhis2_uuid}.json`: dhis2 payload for that particular event.
 - `events_payload/{current_date}__{kobo_uuid}_{dhis2_uuid}__response_event_payload.json`: This file contains the dhis2 response of the request for sending the event.
-- `YYYY-MM-DD_SIPCA.log`: Log file of the ETL process.
-- `YYYY-MM-DD_kobo_sipca_ocba.csv`: Copy of the CSV file retrieved from the OCBA Datalake.
-- `YYYY-MM-DD_event_index_initial.json`: This file contains the index of previous kobo registers. It is a backup of the file retrieved from the OCBA datalake.
-- `YYYY-MM-DD_event_index_final.json`: This file contains the updated index of kobo registers. It is a backup of the file uploaded to the OCBA datalake.
+- `log/YYYY-MM-DD_SIPCA.log`: Log file of the ETL process.
+- `log/YYYY-MM-DD_kobo_sipca_ocba.csv`: Copy of the CSV file retrieved from the OCBA Datalake.
+- `log/YYYY-MM-DD_event_index_initial.json`: This file contains the index of previous kobo registers. It is a backup of the file retrieved from the OCBA datalake.
+- `log/YYYY-MM-DD_event_index_final.json`: This file contains the updated index of kobo registers. It is a backup of the file uploaded to the OCBA datalake.
 - To OCBA datalake: `raw/event_index.json`: This file contains the index of kobo registers after the execution of the script. This file is saved in the OCBA datalake (inside the `sipca` container).
 
 ### Run
