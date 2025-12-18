@@ -6,6 +6,21 @@ The process has 2 parts:
 1. Generating the mapping file (mapping between Kobo input and dhis2 output)
 2. Get the CSV source file, process it, generates dhis2 payloads and send to the server.
 
+## Virtual Environment
+Modern Linux distributions (like Ubuntu 23.04+, Debian 12+, and Fedora) now implement PEP 668. This policy prevents pip from installing packages into the system-wide Python environment to avoid breaking OS-critical tools that rely on specific Python versions.
+The recommended solution is using a Virtual Environment. This is the standard way to isolate your project dependencies without touching the system Python.
+
+Steps:
+
+# 1. Create the environment (in our case, the name is 'sipca_env')
+`python3 -m venv sipca_env`
+
+# 2. Activate it
+`source sipca_env/bin/activate`
+
+# 3. Now you can install packages normally
+`pip install -r requirements.txt`
+
 ## Getting Started
 
 To use these scripts, you will need to have `Python3` installed on your system, and also the Python dependencies listed in `requirements.txt`. In order to install the dependencies you should run:
@@ -76,5 +91,6 @@ Once the dependencies have been installed, you have to navigate to the script di
 - This script (for generating the payload and send it) is deployed currently in the alert/notification/monitoring server (https://monitoring.hmisocba.msf.es/).
 - The folder where the script is deployed is `/home/sipca/msf_sipca/`
 - The cronjob is run every day at 3:00 UTC.
+- The cronjob is `/bin/bash -c "cd /home/sipca/msf_sipca/ && source /home/sipca/msf_sipca/sipca_env/bin/activate && python3 generate_dhis2.py" >> /home/sipca/msf_sipca/cron_log.log 2>&1`
 - An ad-hoc user was created in the unix machine for running the script as a cron job (username: `sipca`).
 - An ad-hoc user was created in the dhis2 instance for synchronizing the data (username: `sipca-admin`).
