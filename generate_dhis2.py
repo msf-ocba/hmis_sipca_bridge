@@ -139,6 +139,10 @@ for index, row in df.iterrows():
         event_index[kobo_uuid] = {"dhis2_uuid": event_uid, "uploaded": False, "deleted": False}
 
     if event_index[kobo_uuid]["uploaded"]:
+        if event_index[kobo_uuid]["deleted"]:
+            logger.info(f"Event was marked as deleted in kobo and now it is back in the CSV file, so it will be marked back as not deleted. [kobo uuid={kobo_uuid}] [dhis2 uuid={event_uid}]")
+            event_index[kobo_uuid]["deleted"] = False
+
         logger.info(f"Not processing event because it was already uploaded in dhis2. [kobo uuid={kobo_uuid}] [dhis2 uuid={event_uid}]")
         continue
 
