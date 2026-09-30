@@ -20,17 +20,23 @@ def send_payload_events(payload_events, dhis2_credentials):
     response = requests.post(url_tracker, data=json.dumps(payload_events), auth=HTTPBasicAuth(USERNAME, PASSWORD),
                              headers={"Content-Type": "application/json"})
 
-    # Creates a job, that needs follow up
-    completed = False
-    location = response.json()["response"]["location"]
+    # DHIS2 42 omits /api in response.location (GET /tracker/jobs/{id} returns 404).
+    # The job is still at {server}/api/tracker/jobs/{id}, so build that URL from the job id.
+    job_response = response.json()["response"]
+    job_id = job_response["id"]
+    location = f"{SERVER_URL}tracker/jobs/{job_id}"
     logger.info(f"Job URL = {location}")
+    logger.debug(f"Location reported by dhis2 = {job_response.get('location')}")
+
+    completed = False
     while not completed:
         response_job = requests.get(location, auth=HTTPBasicAuth(USERNAME, PASSWORD),
                                     headers={"Content-Type": "application/json"})
-        logger.debug(f"Job status = {response_job.json()}")
+        job_status = response_job.json()
+        logger.debug(f"Job status = {job_status}")
 
-        if (not response_job.json()) or (
-                response_job.json()[0]["completed"] != True):  # I don't know why, but the comparison != True is needed
+        if (not job_status) or (
+                job_status[0]["completed"] != True):  # I don't know why, but the comparison != True is needed
             # Wait 5 seconds
             wait_secs = 5
             time.sleep(wait_secs)
@@ -41,12 +47,13 @@ def send_payload_events(payload_events, dhis2_credentials):
             response_report = requests.get(location + "/report", auth=HTTPBasicAuth(USERNAME, PASSWORD),
                                            headers={"Content-Type": "application/json"})
             response_content = response_report.content.decode("utf-8")
-            if response_report.json()["status"] == "OK":
+            report = response_report.json()
+            if report["status"] == "OK":
                 logger.info(f"Server response {response_content}")
             else:
                 logger.error(f"Server response {response_content}")
 
-    return response_report.json()
+    return report
 
 
 # Obtain credentials
